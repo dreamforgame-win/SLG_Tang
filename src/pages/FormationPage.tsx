@@ -356,15 +356,19 @@ export default function FormationPage() {
                     onDragStart={(e) => general && handleDragStart(e, general, slotIndex)}
                   >
                     {general ? (
-                      <div className="relative w-full h-full group pointer-events-none"> {/* pointer-events-none so drag starts on parent div */}
+                      <div 
+                        className="relative w-full h-full group pointer-events-auto cursor-pointer"
+                        onClick={() => setSelectedGeneral(general)}
+                      >
                         <img 
                           src={general.imageUrl} 
                           alt={general.name} 
                           className="w-full h-full object-cover rounded opacity-90 group-hover:opacity-100 transition-opacity"
                         />
-                        <div className="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent opacity-80"></div>
-                        <div className="absolute bottom-1 left-2 text-white font-bold text-xs shadow-black drop-shadow-md z-10">
+                        <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent opacity-80"></div>
+                        <div className="absolute bottom-1 left-2 text-white font-bold text-xs shadow-black drop-shadow-md z-10 flex items-center gap-1">
                           {general.name}
+                          <span className="text-[10px] text-gold font-mono">Lv.{general.level || 1}</span>
                         </div>
                         <div className="absolute top-1 left-1 bg-black/50 rounded-full px-1.5 text-[10px] text-gold border border-gold/30 z-10">
                           {general.cost}
@@ -372,7 +376,7 @@ export default function FormationPage() {
                         
                         {/* Affix Buffs Icon */}
                         {(affixBuffs[general.id]?.length > 0) && (
-                          <div className="absolute bottom-1 right-1 group/buff z-20 pointer-events-auto">
+                          <div className="absolute bottom-1 right-1 group/buff z-[60] pointer-events-auto">
                             <span className="material-symbols-outlined text-gold text-sm drop-shadow-[0_2px_2px_rgba(0,0,0,0.8)] cursor-help">keyboard_double_arrow_up</span>
                             <div className="absolute hidden group-hover/buff:block bottom-full right-0 mb-1 w-48 bg-zinc-900 border border-gold/30 rounded p-2 shadow-xl pointer-events-none">
                               <div className="text-xs font-bold text-gold mb-1 border-b border-gold/20 pb-1">获得增益</div>
@@ -390,10 +394,10 @@ export default function FormationPage() {
 
                         <button 
                           onClick={(e) => {
-                            e.stopPropagation(); // Prevent drag start
+                            e.stopPropagation(); // Prevent drag start and modal open
                             handleRemoveGeneral(general.id);
                           }}
-                          className="absolute -top-2 -right-2 bg-red-600 text-white rounded-full p-1 shadow-lg opacity-0 group-hover:opacity-100 transition-opacity hover:scale-110 pointer-events-auto z-30"
+                          className="absolute -top-1 -right-1 bg-red-600 text-white rounded-full p-0.5 shadow-lg hover:scale-110 pointer-events-auto z-50 scale-75 origin-top-right"
                         >
                           <span className="material-symbols-outlined text-[10px] block">close</span>
                         </button>

@@ -78,7 +78,7 @@ export default function GalleryPage() {
                 src={general.imageUrl}
                 alt={general.name}
               />
-              <div className="absolute inset-0 landscape-overlay"></div>
+              <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/20 to-transparent pointer-events-none"></div>
               
               {general.status !== 'Locked' ? (
                 <>

@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { useGame, FormationType } from '../context/GameContext';
 import { FORMATIONS, FORMATION_NAMES } from '../utils/battleLogic';
 import { calculateAffixBuffs, getAffixAttributeText } from '../utils/affixLogic';
@@ -18,6 +19,7 @@ interface DeploymentModalProps {
 export default function DeploymentModal({ level, onClose, onDeploy }: DeploymentModalProps) {
   const { squads, generals: currentGenerals } = useGame();
   const [selectedSquadId, setSelectedSquadId] = useState<number>(1);
+  const navigate = useNavigate();
 
   const selectedSquad = squads[selectedSquadId];
   const formationLevel = selectedSquad.formationLevel || 1;
@@ -186,7 +188,14 @@ export default function DeploymentModal({ level, onClose, onDeploy }: Deployment
           </div>
         </div>
 
-        <div className="mt-8 flex justify-end">
+        <div className="mt-8 flex justify-end gap-4">
+          <button 
+            onClick={() => navigate('/formation')}
+            className="px-8 py-3 bg-zinc-800 text-slate-300 font-bold text-lg rounded-lg hover:bg-zinc-700 border border-zinc-700 flex items-center gap-2 transition-transform active:scale-95"
+          >
+            <span className="material-symbols-outlined">edit</span>
+            编辑阵容
+          </button>
           <button 
             onClick={() => onDeploy(selectedSquadId)}
             className="px-8 py-3 bg-primary text-white font-bold text-lg rounded-lg hover:bg-primary/90 shadow-lg shadow-primary/20 flex items-center gap-2 transition-transform active:scale-95"
