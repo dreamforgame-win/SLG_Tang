@@ -430,7 +430,7 @@ export default function FormationPage() {
   });
 
   return (
-    <div className="relative flex h-screen w-full flex-col bg-background-light dark:bg-background-dark overflow-hidden cloud-pattern text-slate-900 dark:text-slate-100 font-display">
+    <div className="relative flex h-screen w-full flex-col bg-background-dark overflow-hidden cloud-pattern text-slate-100 font-display">
       <Header />
       
       <div className="flex flex-1 overflow-hidden">

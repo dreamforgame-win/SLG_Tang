@@ -124,7 +124,7 @@ export default function ConquestPage() {
   };
 
   return (
-    <div className="relative flex h-screen w-full flex-col overflow-hidden bg-background-light dark:bg-background-dark text-slate-900 dark:text-slate-100 font-display">
+    <div className="relative flex h-screen w-full flex-col overflow-hidden bg-background-dark text-slate-100 font-display">
       <Header />
       
       <main className="relative flex-1 bg-tang-black overflow-hidden">

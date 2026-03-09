@@ -34,7 +34,7 @@ export default function GalleryPage() {
   };
 
   return (
-    <div className="relative flex flex-col min-h-screen w-full overflow-x-hidden bg-background-light dark:bg-background-dark text-slate-900 dark:text-slate-100 font-display guofeng-pattern">
+    <div className="relative flex flex-col min-h-screen w-full overflow-x-hidden bg-background-dark text-slate-100 font-display guofeng-pattern">
       <Header />
       
       <main className="max-w-7xl mx-auto w-full px-4 lg:px-20 py-8">
