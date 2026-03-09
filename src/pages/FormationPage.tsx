@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { General } from '../data/generals';
 import GeneralCard from '../components/GeneralCard';
 import Header from '../components/Header';
@@ -10,6 +11,7 @@ import { calculateAffixBuffs, getAffixAttributeText } from '../utils/affixLogic'
 export default function FormationPage() {
   const { generals, squads, updateSquad, levels } = useGame();
   const [currentSquadId, setCurrentSquadId] = useState<number>(1);
+  const navigate = useNavigate();
   
   const [draggedGeneral, setDraggedGeneral] = useState<General | null>(null);
   const [draggedFromSlot, setDraggedFromSlot] = useState<number | null>(null); // Track if dragging from a slot
@@ -261,11 +263,6 @@ export default function FormationPage() {
     updateSquad(currentSquadId, { ...currentSquad, formationLevel: level, placements: [] });
   };
 
-  const handleSave = () => {
-    // In a real app, save to backend. Here just alert.
-    alert(`${currentSquad.name} 保存成功！`);
-  };
-
   const startRenaming = () => {
     setTempSquadName(currentSquad.name);
     setIsRenaming(true);
@@ -495,14 +492,26 @@ export default function FormationPage() {
                 return (
                   <button
                     key={level}
-                    onClick={() => isUnlocked && currentFormationLevel !== level && handleFormationLevelChange(level)}
-                    disabled={!isUnlocked}
+                    onClick={() => {
+                      if (!isUnlocked) {
+                        const condition = level === 2 ? '通关第3关后解锁' : '通关第6关后解锁';
+                        const toast = document.createElement('div');
+                        toast.className = 'fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-red-600 text-white px-6 py-3 rounded-lg shadow-xl z-50 font-bold animate-bounce';
+                        toast.innerText = condition;
+                        document.body.appendChild(toast);
+                        setTimeout(() => document.body.removeChild(toast), 2000);
+                        return;
+                      }
+                      if (currentFormationLevel !== level) {
+                        handleFormationLevelChange(level);
+                      }
+                    }}
                     className={`w-full text-left px-4 py-3 rounded border transition-all flex items-center justify-between ${
                       currentFormationLevel === level
                         ? 'border-blue-500 text-blue-400 bg-blue-500/5'
                         : isUnlocked
                           ? 'border-zinc-700 text-slate-400 hover:border-zinc-500'
-                          : 'border-zinc-800 text-zinc-600 bg-zinc-900/50 cursor-not-allowed'
+                          : 'border-zinc-800 text-zinc-600 bg-zinc-900/50 cursor-pointer'
                     }`}
                   >
                     <div className="flex items-center gap-2">
@@ -525,15 +534,6 @@ export default function FormationPage() {
                 {currentSquad.formation === 'square' && '方圆阵，中军厚重，首尾呼应，防御力最强。'}
               </p>
             </div>
-          </div>
-          
-          <div className="p-4 border-t border-zinc-800">
-             <button 
-               onClick={handleSave}
-               className="w-full py-2 bg-gold text-black font-bold rounded hover:bg-yellow-400 transition-colors flex items-center justify-center gap-2"
-             >
-               <span className="material-symbols-outlined">save</span> 保存布阵
-             </button>
           </div>
         </aside>
 
@@ -572,8 +572,17 @@ export default function FormationPage() {
               </div>
 
               {/* The Grid - Center it vertically in remaining space */}
-              <div className="flex-1 flex items-center justify-center overflow-auto">
+              <div className="flex-1 flex items-center justify-center overflow-auto relative">
                 {renderGrid()}
+                
+                {/* Deploy Button */}
+                <button
+                  onClick={() => navigate('/conquest')}
+                  className="absolute bottom-6 right-6 px-8 py-3 bg-primary text-white font-bold text-lg rounded-lg hover:bg-primary/90 shadow-lg shadow-primary/20 flex items-center gap-2 transition-transform active:scale-95 z-20"
+                >
+                  <span className="material-symbols-outlined">swords</span>
+                  出征
+                </button>
               </div>
             </div>
           </div>

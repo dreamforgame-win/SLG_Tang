@@ -27,6 +27,11 @@ function Preloader({ children }: { children: React.ReactNode }) {
       return;
     }
 
+    // Fallback: Force enter game after 5 seconds regardless of loading state
+    const fallbackTimeout = setTimeout(() => {
+      setLoading(false);
+    }, 5000);
+
     imagesToLoad.forEach(src => {
       const img = new Image();
       img.src = src;
@@ -34,6 +39,7 @@ function Preloader({ children }: { children: React.ReactNode }) {
         loadedCount++;
         setProgress(Math.round((loadedCount / totalCount) * 100));
         if (loadedCount === totalCount) {
+          clearTimeout(fallbackTimeout);
           setTimeout(() => setLoading(false), 500); // Small delay for smooth transition
         }
       };
@@ -42,10 +48,13 @@ function Preloader({ children }: { children: React.ReactNode }) {
         loadedCount++;
         setProgress(Math.round((loadedCount / totalCount) * 100));
         if (loadedCount === totalCount) {
+          clearTimeout(fallbackTimeout);
           setTimeout(() => setLoading(false), 500);
         }
       };
     });
+
+    return () => clearTimeout(fallbackTimeout);
   }, []);
 
   if (loading) {
